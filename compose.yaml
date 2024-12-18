@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_PASSWORD: mypassword
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  myapp:
+    build: .
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: postgresql://postgres:mypassword@postgres:5432/mydb
+    volumes:
+      - ./:/app
+
+volumes:
+  postgres_data:
